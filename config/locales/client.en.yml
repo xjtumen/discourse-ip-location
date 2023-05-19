@@ -1,4 +1,4 @@
 en:
   js:
-    discourse_plugin_name:
-      placeholder: placeholder
+    discourse_ip_location: 
+      ip_location: "IP Location"
