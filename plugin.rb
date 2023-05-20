@@ -16,7 +16,8 @@ end
 
 after_initialize do
   # Code which should run after Rails has finished booting
-  add_to_serializer(:user, :ip_location) do
+
+  ip_location_block = Proc.new {
     if object.ip_address == nil
       return I18n.t("discourse_ip_location.unknown")
     end
@@ -36,5 +37,8 @@ after_initialize do
     return info[:region] if info[:region] != nil
     
     return info[:country]
-  end
+  }
+
+  add_to_serializer(:user, :ip_location, &ip_location_block)
+  add_to_serializer(:user_card, :ip_location, &ip_location_block)
 end
