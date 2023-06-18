@@ -1,6 +1,6 @@
 zh_CN:
   site_settings:
-    plugin_ip_location_enabled: "启用 IP 归属地显示（依赖MAXMINDDB）"
+    plugin_ip_location_enabled: "启用 IP 属地显示（依赖MAXMINDDB）"
   discourse_ip_location:
     private: "内网"
     unknown: "未知"
