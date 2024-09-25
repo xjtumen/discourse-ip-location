@@ -1,4 +1,4 @@
 plugins:
   ip_location_enabled:
     default: true
-    client: true
+    client: false

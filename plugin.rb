@@ -2,9 +2,9 @@
 
 # name: discourse-ip-location
 # about: show ip location in front
-# version: 0.0.1
-# authors: Jiajun Du
-# url: https://github.com/ShuiyuanSJTU/discourse-ip-location
+# version: 0.2
+# authors: Jiajun Du, xjtumen
+# url: https://github.com/xjtumen/discourse-ip-location
 # required_version: 2.7.0
 
 enabled_site_setting :ip_location_enabled
@@ -33,18 +33,17 @@ after_initialize do
       return I18n.t("discourse_ip_location.unknown")
     end
 
-    if info[:country_code] != "CN"
-      return info[:country]
-    end
+    # if info[:country_code] != "CN"
+    #   return info[:country]
+    # end
 
     return info[:location] if info[:location] != nil
     return info[:region] if info[:region] != nil
-
     return info[:country]
   }
 
   add_to_serializer(:current_user, :ip_location, &ip_location_block)
   add_to_serializer(:user, :ip_location, &ip_location_block)
   add_to_serializer(:user_card, :ip_location, &ip_location_block)
-  add_to_serializer(:user, :custom_fields, &ip_location_block)
+  # add_to_serializer(:user, :custom_fields, &ip_location_block)
 end
