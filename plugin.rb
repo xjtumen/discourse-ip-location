@@ -7,7 +7,8 @@
 # url: https://github.com/ShuiyuanSJTU/discourse-ip-location
 # required_version: 2.7.0
 
-enabled_site_setting :plugin_ip_location_enabled
+enabled_site_setting :ip_location_enabled
+DiscoursePluginRegistry.serialized_current_user_fields << "ip_location"
 
 module ::IpLocationPluginModule
   PLUGIN_NAME = "discourse-ip-location"
@@ -16,6 +17,8 @@ end
 
 after_initialize do
   # Code which should run after Rails has finished booting
+  User.register_custom_field_type('ip_location', :text)
+  register_editable_user_custom_field :ip_location if defined? register_editable_user_custom_field
 
   ip_location_block = Proc.new {
     if object.ip_address == nil
@@ -34,11 +37,14 @@ after_initialize do
       return info[:country]
     end
 
+    return info[:location] if info[:location] != nil
     return info[:region] if info[:region] != nil
-    
+
     return info[:country]
   }
 
+  add_to_serializer(:current_user, :ip_location, &ip_location_block)
   add_to_serializer(:user, :ip_location, &ip_location_block)
   add_to_serializer(:user_card, :ip_location, &ip_location_block)
+  add_to_serializer(:user, :custom_fields, &ip_location_block)
 end
