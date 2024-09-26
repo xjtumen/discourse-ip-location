@@ -1,6 +1,6 @@
-import {h} from 'virtual-dom';
-import {withPluginApi} from 'discourse/lib/plugin-api';
-import {ajax} from 'discourse/lib/ajax';
+import { h } from "virtual-dom";
+import { withPluginApi } from "discourse/lib/plugin-api";
+import { ajax } from "discourse/lib/ajax";
 
 const PLUGIN_ID = "ip_location";
 
@@ -10,17 +10,18 @@ function initializeIpLocation(api, siteSettings) {
   if (!ipLocationEnabled) {
     return;
   }
-  api.decorateWidget('poster-name:after', helper => {
-    let result = 'none';
+  api.decorateWidget("poster-name:after", helper => {
+    let result = "none";
+    console.log(helper.attrs);
     if (helper.attrs && helper.attrs.user && helper.attrs.user.ip_location) {
-      result = helper.attrs.user.ip_location ;
+      result = helper.attrs.user.ip_location;
     }
 
-    if (!result || result === 'unknown') {
+    if (!result || result === "none") {
       return;
     }
-    return helper.h('p',  result);
-    return helper.h('img', { // display the flag
+    return helper.h("p", I18n.t("discourse_ip_location.ip_location") + " " + result);
+    return helper.h("img", { // display the flag
       className: "nationalflag-post",
       attributes: {
         src: "/plugins/discourse-nationalflags/images/nationalflags/" + result + ".png"
@@ -31,9 +32,9 @@ function initializeIpLocation(api, siteSettings) {
 }
 
 export default {
-  name : 'ip_location',
+  name: "ip_location",
   initialize(container) {
-    const siteSettings = container.lookup('site-settings:main');
-    withPluginApi('0.1', api => initializeIpLocation(api, siteSettings));
+    const siteSettings = container.lookup("site-settings:main");
+    withPluginApi("0.1", api => initializeIpLocation(api, siteSettings));
   }
 };
