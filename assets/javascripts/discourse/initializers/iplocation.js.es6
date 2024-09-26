@@ -13,18 +13,18 @@ function initializeIpLocation(api, siteSettings) {
   api.decorateWidget("poster-name:after", helper => {
     let result = "none";
     console.log(helper.attrs);
-
-    try {
+    if (helper.attrs && helper.attrs.user && helper.attrs.user.ip_location) {
       result = helper.attrs.user.ip_location;
-    } catch (e) {
-      console.log(e);
-      return;
     }
 
     if (!result || result === "none") {
       return;
     }
-    return helper.h("p", I18n.t("discourse_ip_location.ip_location")+": "+result);
+    try {
+      return helper.h("p", I18n.t("discourse_ip_location.ip_location") + " " + result);
+    } catch (e) {
+      return helper.h("p", "IP: " + result);
+    }
     return helper.h("img", { // display the flag
       className: "nationalflag-post",
       attributes: {
